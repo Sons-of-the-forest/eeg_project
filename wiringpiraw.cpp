@@ -79,7 +79,7 @@ int main(){
                                     dataNum+=1;
                                     FILE* fptr;
                                     char fileName[64];
-                                    sprintf(fileName, "dataRaw/output%d.csv",dataNum);
+                                    sprintf(fileName, "dataRaw/camon/camon%d.csv",dataNum);
                                     fptr=fopen(fileName, "a+");
                                     if (fptr==NULL){
                                         printf("Error opening file.\n");
@@ -115,7 +115,7 @@ return 0;
 
 void switchInterrupt(void){
     unsigned long interrupt_time=millis();
-    if (interrupt_time-last_interrupt_time>800){
+    if (interrupt_time-last_interrupt_time>600){
         //interrupt okay
         interruptNum+=1;
         printf("Button Pressed %d\n", interruptNum);
