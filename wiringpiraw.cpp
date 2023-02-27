@@ -73,13 +73,13 @@ int main(){
                                     secondBytePayload[index]=secondByte;
                                     brainwavePayload[index]=brainwaveValue;
                                     index=index+1;
-                                    // printf("index %d\n", index);
+                                    // printf("index %d\n", index)
                                 }
                                 if (button==writeBtn){
                                     dataNum+=1;
                                     FILE* fptr;
                                     char fileName[64];
-                                    sprintf(fileName, "dataRaw/benhvien/benhvien%d.csv",dataNum);
+                                    sprintf(fileName, "dataRaw/khong/khong%d.csv",dataNum);
                                     fptr=fopen(fileName, "a+");
                                     if (fptr==NULL){
                                         printf("Error opening file.\n");
