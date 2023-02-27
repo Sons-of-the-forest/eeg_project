@@ -79,7 +79,7 @@ int main(){
                                     dataNum+=1;
                                     FILE* fptr;
                                     char fileName[64];
-                                    sprintf(fileName, "dataRaw/ancom/ancom%d.csv",dataNum);
+                                    sprintf(fileName, "dataRaw/tambiet/tambiet%d.csv",dataNum);
                                     fptr=fopen(fileName, "a+");
                                     if (fptr==NULL){
                                         printf("Error opening file.\n");
