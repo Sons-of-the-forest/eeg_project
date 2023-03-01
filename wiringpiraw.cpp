@@ -17,7 +17,7 @@ int betaMessage = 0;
 int totalMessage = 0;
 int trueLengthMessage = 0;
 int interruptNum = 0;
-int dataNum = 0;
+int dataNum = 0; // Increase this number to write new files
 int brainwavePayload[3000] = {0};
 int firstBytePayload[3000] = {0};
 int secondBytePayload[3000] = {0};
@@ -94,7 +94,7 @@ int main()
                                         {
                                             dataNum += 1;
                                             FILE *fptr;
-                                            string fileNameStr = "dataRaw/bat/bat" + to_string(dataNum) + ".csv";
+                                            string fileNameStr = "dataRaw/bat_add/bat_add" + to_string(dataNum) + ".csv";
                                             const char *fileName = fileNameStr.c_str();
                                             usleep(1000000);
                                             // sprintf(fileName, "dataRaw/tamws/tamws%d.csv", dataNum);
