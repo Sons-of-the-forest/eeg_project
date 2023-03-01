@@ -39,7 +39,8 @@ for word in wordList:
         plt.axis('off')
         plt.subplots_adjust(left=0.005, bottom=0.005, right=0.995, top=0.995)
         graphName=wordFile.removesuffix('.csv')+'.png'
-        plt.savefig(os.path.join(graphPath,graphName))
+        plt.savefig(os.path.join(graphPath,graphName), format='png')
+        plt.close()
 
 
     # print(wordFiles)
