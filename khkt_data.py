@@ -33,7 +33,7 @@ for word in wordList:
         for i in range(0,len(data)):
             image_1.append(int(data[i][2]))
             index_1.append(i)
-        fig = plt.figure(figsize=(7,5))
+        fig = plt.figure(figsize=(14,10))
         fig.patch.set_facecolor('white')
         plt.plot(index_1, image_1, label = "brainwave_value")
         plt.axis('off')

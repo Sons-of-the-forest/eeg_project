@@ -83,7 +83,11 @@ int main()
                                         {
                                             firstByte = payloadData[i + 2];
                                             secondByte = payloadData[i + 3];
-                                            brainwaveValue = (firstByte << 8) | secondByte;
+                                            brainwaveValue = (firstByte * 256) + secondByte;
+                                            if (brainwaveValue >= 32768)
+                                            {
+                                                brainwaveValue = brainwaveValue - 65536;
+                                            }
                                             firstBytePayload[index] = firstByte;
                                             secondBytePayload[index] = secondByte;
                                             brainwavePayload[index] = brainwaveValue;
