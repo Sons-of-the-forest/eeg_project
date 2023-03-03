@@ -83,7 +83,11 @@ int main()
                                         {
                                             firstByte = payloadData[i + 2];
                                             secondByte = payloadData[i + 3];
-                                            brainwaveValue = (firstByte << 8) | secondByte;
+                                            brainwaveValue = (firstByte * 256) + secondByte;
+                                            if (brainwaveValue >= 32768)
+                                            {
+                                                brainwaveValue = brainwaveValue - 65536;
+                                            }
                                             firstBytePayload[index] = firstByte;
                                             secondBytePayload[index] = secondByte;
                                             brainwavePayload[index] = brainwaveValue;
@@ -94,7 +98,7 @@ int main()
                                         {
                                             dataNum += 1;
                                             FILE *fptr;
-                                            string fileNameStr = "dataRaw/ddem_add1/ddem_add1" + to_string(dataNum) + ".csv";
+                                            string fileNameStr = "dataRaw/uongnuoc_add/uongnuoc_add" + to_string(dataNum) + ".csv";
                                             const char *fileName = fileNameStr.c_str();
                                             usleep(1000000);
                                             // sprintf(fileName, "dataRaw/tamws/tamws%d.csv", dataNum);
