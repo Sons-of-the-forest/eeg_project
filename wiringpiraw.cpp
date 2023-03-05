@@ -98,7 +98,7 @@ int main()
                                         {
                                             dataNum += 1;
                                             FILE *fptr;
-                                            string fileNameStr = "dataRaw/benhvien_add_add/benhvien_add_add" + to_string(dataNum) + ".csv";
+                                            string fileNameStr = "dataRaw/lamviec_add_add/lamviec_add_add" + to_string(dataNum) + ".csv";
                                             const char *fileName = fileNameStr.c_str();
                                             usleep(1000000);
                                             // sprintf(fileName, "dataRaw/tamws/tamws%d.csv", dataNum);
