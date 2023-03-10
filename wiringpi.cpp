@@ -147,7 +147,7 @@ int main()
                                         {
                                             dataNum += 1;
                                             FILE *fptr;
-                                            fptr = fopen("data/output.csv", "a+"); // change output file name to word name
+                                            fptr = fopen("data/dienthoai_suyt_cam.csv", "a+"); // change output file name to word name
                                             if (fptr == NULL)
                                             {
                                                 printf("Error opening file.\n");
@@ -188,7 +188,7 @@ int main()
 
 void switchInterrupt(void)
 {
-    unsigned long interrupt_time = millis();
+    unsigned long long interrupt_time = millis();
     if (interrupt_time - last_interrupt_time > 600)
     {
         // interrupt okay
