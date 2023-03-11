@@ -10,11 +10,20 @@
 using namespace std;
 int main(int argc, char *argv[]){
     Py_Initialize();
-    string returnWord="xin chào";
     PyObject* voiceModule=PyImport_ImportModule("pyttsx3");
+    PyObject* requests=PyImport_ImportModule("requests");
+    PyObject* pd=PyImport_ImportModule("pandas");
     PyObject* engine=PyObject_GetAttrString(voiceModule, "engine");
-    string script="import pyttsx3\nengine=pyttsx3.init()\nvoices=engine.getProperty('voices')\nengine.setProperty('voice',voices[70].id)\nengine.say('"+returnWord+"')\nengine.runAndWait()";
-    cout<< script.c_str() <<endl;
+    string script="import pyttsx3\nimport requests\nimport pandas as pd\n"
+    "df = pd.read_csv('dataRaw/datnuoc_add_add/datnuoc_add_add27.csv')\n"
+    "list_object = df[' Brainwave Value'].to_list()\n"
+    "response = requests.post('http://9966-34-124-161-212.ngrok.io/api/predict', json={'list': list_object})\n"
+    "print(response.text)\n"
+    "engine=pyttsx3.init()\n"
+    "voices=engine.getProperty('voices')\n"
+    "engine.setProperty('voice',voices[70].id)\n"
+    "engine.say(response.text)\n"
+    "engine.runAndWait()";
     PyRun_SimpleString(script.c_str());
     Py_Finalize();
 }
