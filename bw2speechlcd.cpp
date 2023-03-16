@@ -139,7 +139,7 @@ int main()
                                         {
                                             dataNum += 1;
                                             FILE *fptr;
-                                            string fileNameStr = "dataOutput/data.csv";
+                                            string fileNameStr = "/home/pi/Desktop/eeg/eeg_project/dataOutput/data.csv";
                                             const char *fileName = fileNameStr.c_str();
                                             usleep(1000000);
                                             // sprintf(fileName, "dataRaw/tamws/tamws%d.csv", dataNum);
@@ -230,21 +230,27 @@ void predictAndSpeech(){
     string script="import pyttsx3\nimport requests\nimport pandas as pd\nimport json\n"
     "df = pd.read_csv('dataOutput/data.csv')\n"
     "list_object = df[' Brainwave Value'].to_list()\n"
-    "response = requests.post('http://bab6-34-87-23-195.ngrok.io/api/predict', json={'list': list_object})\n"
-    "response = json.loads(response.text)\n"
-    "print(response['word'])\n"
-    "print(response['prob'])\n"
-    "output=max(response['prob'], key=lambda x:x[1])\n"
-    "file= open('temp.txt', 'w')\n"
-    "file.write(output[0])\n"
-    "file.close()\n"
-    "if output[1]>0.5:\n"
-    "   engine=pyttsx3.init()\n"
-    "   voices=engine.getProperty('voices')\n"
-    "   engine.setProperty('voice',voices[70].id)\n"
-    "   engine.say(output[0])\n"
-    "   print(output[0])\n"
-    "   engine.runAndWait()";
+    "response = requests.post('http://ac46-35-224-19-255.ngrok.io/api/predict', json={'list': list_object})\n"
+    "try:\n"
+    "   response = json.loads(response.text)\n"
+    "   print(response['word'])\n"
+    "   print(response['prob'])\n"
+    "   output=max(response['prob'], key=lambda x:x[1])\n"
+    "   file= open('temp.txt', 'w')\n"
+    "   file.write(output[0])\n"
+    "   file.close()\n"
+    "   if output[1]>0.5:\n"
+    "       engine=pyttsx3.init()\n"
+    "       voices=engine.getProperty('voices')\n"
+    "       engine.setProperty('voice',voices[70].id)\n"
+    "       engine.say(output[0])\n"
+    "       print(output[0])\n"
+    "       engine.runAndWait()\n"
+    "except:\n"
+    "   print('SERVER ERROR')\n"
+    "   file= open('temp.txt', 'w')\n"
+    "   file.write('SERVER ERROR')\n"
+    "   file.close()\n";
     PyRun_SimpleString(script.c_str());
     // Py_Finalize();
 }
@@ -255,7 +261,9 @@ void displayWordLCD(){
     myfile.open("temp.txt");
     if (myfile.is_open()) {
         if (getline(myfile, line)) {
-            line=convertTextVN(line);
+            if(line!="SERVER ERROR"){
+                line=convertTextVN(line);
+            }
             ClrLcd();
             typeString(line.c_str());
         }

@@ -35,6 +35,7 @@ int main()
 {
     int fd;
     int index = 0;
+    // KHOI TAO GPIO start//
     wiringPiSetupGpio();
     pinMode(INTERRUPT_PIN, INPUT);
     wiringPiISR(INTERRUPT_PIN, INT_EDGE_FALLING, &switchInterrupt);
@@ -43,24 +44,22 @@ int main()
     {
         fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
     }
-    // char data[]="0x00";
-    // int length=strlen(data);
-    // serialPrintf(fd, data, length);
     usleep(1000000);
     cout << "READY!" << endl;
+    // KHOI TAO GPIO end//
     while (1)
     {
+        // CHECK DU LIEU GUI TOI SERIAL //
         if (serialDataAvail(fd))
         {
+            // CHECK DU LIEU DUNG DINH DANG start //
             if (serRead(fd) == 0xAA)
             {
                 if (serRead(fd) == 0xAA)
                 {
-                    // totalMessage+=1;
                     int pLength = serRead(fd);
                     if (pLength == 0x04)
                     {
-                        // trueLengthMessage+=1;
                         int payloadData[pLength] = {0};
                         generatedChecksum = 0;
                         for (int i = 0; i < pLength; i++)
@@ -72,15 +71,17 @@ int main()
                         generatedChecksum = (~generatedChecksum) & 0xff;
                         if (checksum == generatedChecksum)
                         {
-                            // trueCheckMessage+=1;
                             for (int i = 0; i < pLength; i++)
                             {
                                 if (payloadData[i] == 0x80)
                                 {
                                     if (payloadData[i + 1] == 0x02)
                                     {
+                                        // CHECK DU LIEU DUNG DINH DANG end //
+                                        // CHECK TRANG THAI = THU DU LIEU ? //
                                         if (button == parseBtn)
                                         {
+                                            // LUU DU LIEU VAO BIEN TAM  start//
                                             firstByte = payloadData[i + 2];
                                             secondByte = payloadData[i + 3];
                                             brainwaveValue = (firstByte * 256) + secondByte;
@@ -92,16 +93,17 @@ int main()
                                             secondBytePayload[index] = secondByte;
                                             brainwavePayload[index] = brainwaveValue;
                                             index = index + 1;
-                                            // printf("index %d\n", index)
+                                            // LUU DU LIEU VAO BIEN TAM  end//
                                         }
+                                        // CHECK TRANG THAI = GHI DU LIEU ? //
                                         if (button == writeBtn)
                                         {
+                                            // GHI DU LIEU RA FILE start//
                                             dataNum += 1;
                                             FILE *fptr;
                                             string fileNameStr = "dataRaw/tambiet_new/tambiet_new" + to_string(dataNum) + ".csv";
                                             const char *fileName = fileNameStr.c_str();
                                             usleep(1000000);
-                                            // sprintf(fileName, "dataRaw/tamws/tamws%d.csv", dataNum);
                                             fptr = fopen(fileName, "a+");
                                             if (fptr == NULL)
                                             {
@@ -116,6 +118,8 @@ int main()
                                                 fflush(stdout);
                                             }
                                             fclose(fptr);
+                                            // GHI DU LIEU RA FILE end//
+                                            // CHUYEN TRANG THAI -> NGHI //
                                             button = idleBtn;
                                             index = 0;
                                             printf("Completed Writing %d\n", dataNum);
@@ -129,23 +133,17 @@ int main()
                 }
             }
         }
-        // printf("total Message: %d\ntrue Length Message : %d\ntrue Check Message: %d\nbeta Message: %d\n", totalMessage, trueLengthMessage, trueCheckMessage, betaMessage);
-        // printf("true Length Message : %d\n", trueLengthMessage);
-        // printf("true Check Message: %d\n", trueCheckMessage);
-        // fflush(stdout);
     }
     return 0;
 }
-
+//HAM NGAT NUT BAM start//
 void switchInterrupt(void)
 {
     unsigned long interrupt_time = millis();
     if (interrupt_time - last_interrupt_time > 600)
     {
-        // interrupt okay
         interruptNum += 1;
         printf("Button Pressed %d\n", interruptNum);
-        // printf("Button before %d\n", button);
         fflush(stdout);
         if (button == idleBtn)
         {
@@ -162,13 +160,10 @@ void switchInterrupt(void)
             button = idleBtn;
             cout << "OVERFLOW DATA. RESETTED BTN TO EDLE" << endl;
         }
-        // printf("Button after%d\n", button);
     }
     last_interrupt_time = interrupt_time;
-    // while (!digitalRead(INTERRUPT_PIN)){
-    //     //do nothing//
-    // }
 }
+//HAM NGAT NUT BAM end//
 
 int serRead(int serial)
 {
